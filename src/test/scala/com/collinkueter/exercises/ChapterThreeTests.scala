@@ -223,9 +223,15 @@ class ChapterThreeTests
 
   behavior of "subSequence"
 
-  ignore should "find subsequence within a list" in {
+  it should "find subsequence within a list = List(1, 2)" in {
     List.hasSubsequence(List(1, 2, 3, 4), List(1, 2)) shouldBe true
+  }
+  
+  it should "find subsequence within a list in List(2, 3)" in {
     List.hasSubsequence(List(1, 2, 3, 4), List(2, 3)) shouldBe true
+  }
+
+  it should "find subsequence within a list in List(4)" in {
     List.hasSubsequence(List(1, 2, 3, 4), List(4)) shouldBe true
   }
 }

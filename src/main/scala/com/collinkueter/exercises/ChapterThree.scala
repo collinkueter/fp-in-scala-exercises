@@ -155,7 +155,17 @@ object List {
     }
 
   // Exercise 3.24
-  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = ???
+  def startsWith[A](sup: List[A], sub: List[A]): Boolean = (sup, sub) match {
+    case (_, Nil)                                => true
+    case (Cons(h, t), Cons(h2, t2)) if (h == h2) => startsWith(t, t2)
+    case _                                       => false
+  }
+
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = sup match {
+    case Nil                         => sub == Nil
+    case _ if (startsWith(sup, sub)) => true
+    case Cons(h, t)                  => hasSubsequence(t, sub)
+  }
 }
 
 object ChapterThree {
