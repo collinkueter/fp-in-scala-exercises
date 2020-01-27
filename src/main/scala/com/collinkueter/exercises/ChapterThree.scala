@@ -186,36 +186,44 @@ case class Leaf[A](value: A) extends CrappyTree[A]
 case class Branch[A](left: CrappyTree[A], right: CrappyTree[A]) extends CrappyTree[A]
 
 object CrappyTreeExercises {
+  // Exercise 3.25
   def size[A](tree: CrappyTree[A]): Int =
     tree match {
       case Leaf(d)             => 1
       case Branch(left, right) => size(left) + size(right)
     }
 
+  // Exercise 3.26
   def maximum(tree: CrappyTree[Int]): Int = tree match {
     case Leaf(value)         => value
     case Branch(left, right) => maximum(left) max maximum(right)
   }
 
+  // Exercise 3.27
   def depth[A](tree: CrappyTree[A]): Int = tree match {
     case Leaf(value)         => 1
     case Branch(left, right) => (depth(left) max depth(right)) + 1
   }
 
+  // Exercise 3.28
   def map[A, B](tree: CrappyTree[A])(f: A => B): CrappyTree[B] = tree match {
     case Leaf(value)         => Leaf(f(value))
     case Branch(left, right) => Branch(map(left)(f), map(right)(f))
   }
 
+  // Exercise 3.29-a
   def fold[A, B](tree: CrappyTree[A])(f: A => B)(g: (B, B) => B): B =
     tree match {
       case Leaf(a)             => f(a)
       case Branch(left, right) => g(fold(left)(f)(g), fold(right)(f)(g))
     }
 
+  // Exercise 3.29-b 
   def sizeInTermsOfFold[A](tree: CrappyTree[A]): Int = fold(tree)(_ => 1)((b1, b2) => b1 + b2)
 
+  // Exercise 3.29-c
   def maximumInTermsOfFold(tree: CrappyTree[Int]): Int = fold(tree)(a => a)((b1, b2) => b1 max b2)
 
+  // Exercise 3.29-d
   def depthInTermsOfFold[A](tree: CrappyTree[A]): Int = fold(tree)(_ => 1)((b1, b2) => (b1 max b2) + 1)
 }
