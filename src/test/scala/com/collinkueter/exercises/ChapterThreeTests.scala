@@ -1,12 +1,9 @@
 package com.collinkueter.exercises
 
 import org.scalatest._
+import scala.collection.immutable.Stream.Empty
 
-class ChapterThreeTests
-    extends FlatSpec
-    with Matchers
-    with DiagrammedAssertions {
-
+class ChapterThreeTests extends FlatSpec with Matchers with DiagrammedAssertions {
   behavior of "3.1 pattern matching"
 
   it should "be equal to 3" in {
@@ -226,12 +223,83 @@ class ChapterThreeTests
   it should "find subsequence within a list = List(1, 2)" in {
     List.hasSubsequence(List(1, 2, 3, 4), List(1, 2)) shouldBe true
   }
-  
+
   it should "find subsequence within a list in List(2, 3)" in {
     List.hasSubsequence(List(1, 2, 3, 4), List(2, 3)) shouldBe true
   }
 
   it should "find subsequence within a list in List(4)" in {
     List.hasSubsequence(List(1, 2, 3, 4), List(4)) shouldBe true
+  }
+
+  behavior of "Tree"
+  //       _
+  //   _       _
+  // 1   2   10   8
+
+  it should "return size of tree" in {
+    val a = Leaf(1)
+    val b = Leaf(2)
+    val c = Leaf(10)
+    val d = Leaf(8)
+    val t = Branch(Branch(a, b), Branch(c, d))
+    CrappyTreeExercises.size(t) shouldBe 4
+  }
+
+  it should "return maxium value in tree" in {
+    val a = Leaf(1)
+    val b = Leaf(2)
+    val c = Leaf(10)
+    val d = Leaf(8)
+    val t = Branch(Branch(a, b), Branch(c, d))
+    CrappyTreeExercises.maximum(t) shouldBe 10
+  }
+
+  it should "return depth of tree" in {
+    val a = Leaf(1)
+    val b = Leaf(2)
+    val c = Leaf(10)
+    val d = Leaf(8)
+    val t = Branch(Branch(a, b), Branch(c, d))
+    CrappyTreeExercises.depth(t) shouldBe 3
+  }
+
+  it should "map over tree" in {
+    val a = Leaf(1)
+    val b = Leaf(2)
+    val c = Leaf(10)
+    val d = Leaf(8)
+    val t = Branch(Branch(a, b), Branch(c, d))
+    val t2 = CrappyTreeExercises.map(t)(_ * 2)
+    CrappyTreeExercises.maximum(t2) shouldBe 20
+  }
+
+  behavior of "Tree In Terms of Fold"
+
+  it should "return size of tree" in {
+    val a = Leaf(1)
+    val b = Leaf(2)
+    val c = Leaf(10)
+    val d = Leaf(8)
+    val t = Branch(Branch(a, b), Branch(c, d))
+    CrappyTreeExercises.sizeInTermsOfFold(t) shouldBe 4
+  }
+
+  it should "return maxium value in tree" in {
+    val a = Leaf(1)
+    val b = Leaf(2)
+    val c = Leaf(10)
+    val d = Leaf(8)
+    val t = Branch(Branch(a, b), Branch(c, d))
+    CrappyTreeExercises.maximumInTermsOfFold(t) shouldBe 10
+  }
+
+  it should "return depth of tree" in {
+    val a = Leaf(1)
+    val b = Leaf(2)
+    val c = Leaf(10)
+    val d = Leaf(8)
+    val t = Branch(Branch(a, b), Branch(c, d))
+    CrappyTreeExercises.depthInTermsOfFold(t) shouldBe 3
   }
 }

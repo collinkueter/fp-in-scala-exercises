@@ -155,21 +155,22 @@ object List {
     }
 
   // Exercise 3.24
-  def startsWith[A](sup: List[A], sub: List[A]): Boolean = (sup, sub) match {
-    case (_, Nil)                                => true
-    case (Cons(h, t), Cons(h2, t2)) if (h == h2) => startsWith(t, t2)
-    case _                                       => false
-  }
-
-  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = sup match {
-    case Nil                         => sub == Nil
-    case _ if (startsWith(sup, sub)) => true
-    case Cons(h, t)                  => hasSubsequence(t, sub)
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
+    def startsWith[A](supI: List[A], suI: List[A]): Boolean =
+      (supI, suI) match {
+        case (_, Nil)                                => true
+        case (Cons(h, t), Cons(h2, t2)) if (h == h2) => startsWith(t, t2)
+        case _                                       => false
+      }
+    sup match {
+      case Nil                         => sub == Nil
+      case _ if (startsWith(sup, sub)) => true
+      case Cons(h, t)                  => hasSubsequence(t, sub)
+    }
   }
 }
 
 object ChapterThree {
-
   // Exercise 3.1
   val x = List(1, 2, 3, 4, 5) match {
     case Cons(x, Cons(2, Cons(4, _)))          => x
@@ -178,4 +179,43 @@ object ChapterThree {
     case Cons(h, t)                            => h + List.sum(t)
     case _                                     => 101
   }
+}
+
+sealed trait CrappyTree[+A]
+case class Leaf[A](value: A) extends CrappyTree[A]
+case class Branch[A](left: CrappyTree[A], right: CrappyTree[A]) extends CrappyTree[A]
+
+object CrappyTreeExercises {
+  def size[A](tree: CrappyTree[A]): Int =
+    tree match {
+      case Leaf(d)             => 1
+      case Branch(left, right) => size(left) + size(right)
+    }
+
+  def maximum(tree: CrappyTree[Int]): Int = tree match {
+    case Leaf(value)         => value
+    case Branch(left, right) => maximum(left) max maximum(right)
+  }
+
+  def depth[A](tree: CrappyTree[A]): Int = tree match {
+    case Leaf(value)         => 1
+    case Branch(left, right) => (depth(left) max depth(right)) + 1
+  }
+
+  def map[A, B](tree: CrappyTree[A])(f: A => B): CrappyTree[B] = tree match {
+    case Leaf(value)         => Leaf(f(value))
+    case Branch(left, right) => Branch(map(left)(f), map(right)(f))
+  }
+
+  def fold[A, B](tree: CrappyTree[A])(f: A => B)(g: (B, B) => B): B =
+    tree match {
+      case Leaf(a)             => f(a)
+      case Branch(left, right) => g(fold(left)(f)(g), fold(right)(f)(g))
+    }
+
+  def sizeInTermsOfFold[A](tree: CrappyTree[A]): Int = fold(tree)(_ => 1)((b1, b2) => b1 + b2)
+
+  def maximumInTermsOfFold(tree: CrappyTree[Int]): Int = fold(tree)(a => a)((b1, b2) => b1 max b2)
+
+  def depthInTermsOfFold[A](tree: CrappyTree[A]): Int = fold(tree)(_ => 1)((b1, b2) => (b1 max b2) + 1)
 }
