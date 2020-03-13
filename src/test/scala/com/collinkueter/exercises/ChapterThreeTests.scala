@@ -243,7 +243,9 @@ class ChapterThreeTests extends FlatSpec with Matchers with DiagrammedAssertions
     val c = Leaf(10)
     val d = Leaf(8)
     val t = Branch(Branch(a, b), Branch(c, d))
-    CrappyTreeExercises.size(t) shouldBe 4
+    CrappyTreeExercises.size(t) shouldBe 7
+
+    CrappyTreeExercises.size(Branch(Leaf(1), Leaf(2))) shouldBe 3
   }
 
   it should "return maxium value in tree" in {
@@ -282,7 +284,7 @@ class ChapterThreeTests extends FlatSpec with Matchers with DiagrammedAssertions
     val c = Leaf(10)
     val d = Leaf(8)
     val t = Branch(Branch(a, b), Branch(c, d))
-    CrappyTreeExercises.sizeInTermsOfFold(t) shouldBe 4
+    CrappyTreeExercises.sizeInTermsOfFold(t) shouldBe 7
   }
 
   it should "return maxium value in tree" in {

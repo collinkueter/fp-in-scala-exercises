@@ -1,5 +1,4 @@
 package com.collinkueter.exercises
-import java.awt.datatransfer.FlavorMap
 
 sealed trait List[+A]
 case object Nil extends List[Nothing]
@@ -190,7 +189,7 @@ object CrappyTreeExercises {
   def size[A](tree: CrappyTree[A]): Int =
     tree match {
       case Leaf(d)             => 1
-      case Branch(left, right) => size(left) + size(right)
+      case Branch(left, right) => size(left) + size(right) + 1
     }
 
   // Exercise 3.26
@@ -218,12 +217,14 @@ object CrappyTreeExercises {
       case Branch(left, right) => g(fold(left)(f)(g), fold(right)(f)(g))
     }
 
-  // Exercise 3.29-b 
-  def sizeInTermsOfFold[A](tree: CrappyTree[A]): Int = fold(tree)(_ => 1)((b1, b2) => b1 + b2)
+  // Exercise 3.29-b
+  def sizeInTermsOfFold[A](tree: CrappyTree[A]): Int = fold(tree)(_ => 1)((b1, b2) => 1 + b1 + b2)
 
   // Exercise 3.29-c
   def maximumInTermsOfFold(tree: CrappyTree[Int]): Int = fold(tree)(a => a)((b1, b2) => b1 max b2)
 
   // Exercise 3.29-d
   def depthInTermsOfFold[A](tree: CrappyTree[A]): Int = fold(tree)(_ => 1)((b1, b2) => (b1 max b2) + 1)
+
+  def mapInTermsOfFold[A, B](tree: CrappyTree[A])(f: A => B): CrappyTree[B] = fold(tree)(a => Leaf(f(a)): CrappyTree[B])(Branch(_, _))
 }

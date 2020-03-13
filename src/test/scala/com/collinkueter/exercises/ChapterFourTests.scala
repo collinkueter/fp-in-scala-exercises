@@ -37,4 +37,11 @@ class ChapterFourTests extends FlatSpec with Matchers with DiagrammedAssertions 
     Some(2).isDefined shouldBe true
     None.isDefined shouldBe false
   }
+
+//  behavior of "variance"
+//
+//  it should "return" in {
+//    val doubles = Seq(1.0, 2.0, 3.0)
+//    ChapterFour.variance(doubles) shouldBe None
+//  }
 }
