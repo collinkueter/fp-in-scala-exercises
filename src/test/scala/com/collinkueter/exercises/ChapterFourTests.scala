@@ -1,8 +1,9 @@
 package com.collinkueter.exercises
 
-import org.scalatest._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.flatspec.AnyFlatSpec
 
-class ChapterFourTests extends FlatSpec with Matchers with DiagrammedAssertions {
+class ChapterFourTests extends AnyFlatSpec with Matchers {
   behavior of "Option"
 
   it should "map if exists" in {

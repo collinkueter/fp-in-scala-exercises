@@ -120,7 +120,7 @@ object List {
 
   // Exercise 3.17
   def doubleToString(l: List[Double]): List[String] =
-    foldRight(l, Nil: List[String])((a, b) => Cons(a.toString(), b))
+    foldRight(l, Nil: List[String])((a, b) => Cons(a.toString, b))
 
   // Exercise 3.18
   def map[A, B](as: List[A])(f: A => B): List[B] =
