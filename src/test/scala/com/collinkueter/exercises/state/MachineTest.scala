@@ -1,16 +1,16 @@
-package com.collinkueter.exercises.chapter6
+package com.collinkueter.exercises.state
 
-import com.collinkueter.exercises.chapter6.CandyMachine._
+import com.collinkueter.exercises.state.Machine.{simulateMachine, tagCandies, tagCoins}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-class StateTest extends AnyFlatSpec with Matchers {
+class MachineTest extends AnyFlatSpec with Matchers {
   val inputCoin: List[Input] = List(Coin)
   val inputTurn: List[Input] = List(Turn)
 
-  val machine1: Machine = Machine(locked = true, candies = 1, coins = 0)
-  val machine2: Machine = Machine(locked = false, candies = 1, coins = 1)
-  val machine3: Machine = Machine(locked = true, candies = 0, coins = 1)
+  val machine1: Machine = Machine(locked = true, candies = tagCandies(1), coins = tagCoins(0))
+  val machine2: Machine = Machine(locked = false, candies = tagCandies(1), coins = tagCoins(1))
+  val machine3: Machine = Machine(locked = true, candies = tagCandies(0), coins = tagCoins(1))
 
   "Inserting a coin into a locked machine" should "cause it to unlock if there’s any candy left." in {
     val result = simulateMachine(inputCoin).run(machine1)
@@ -43,5 +43,14 @@ class StateTest extends AnyFlatSpec with Matchers {
     result._2.locked shouldBe machine3.locked
     result._2.candies shouldBe 0
     result._2.coins shouldBe 1
+  }
+
+  "Book example" should "work" in {
+    val machine = Machine(locked = true, candies = tagCandies(5), coins = tagCoins(10))
+    val inputs = List(Coin, Turn, Coin, Turn, Coin, Turn, Coin, Turn)
+    val result = simulateMachine(inputs).run(machine)
+    result._2.locked shouldBe true
+    result._2.coins shouldBe 14
+    result._2.candies shouldBe 1
   }
 }
